@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 subscriber.onNext(1);
             }
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.net())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Integer>() {
                     @Override
