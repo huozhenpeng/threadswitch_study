@@ -20,19 +20,6 @@ public class Observable<T> {
     /**
      * 每调用一次都会产生一个新的Observable，新的Observable会在新线程中调用原先的Observable中的代码
      * 所以多次调用subscribeOn，代码会运行在第一次指定的线程中
-     *     new Thread(new Runnable() {
-     *             @Override
-     *             public void run() {
-     *
-     *                 new Thread(new Runnable() {
-     *                     @Override
-     *                     public void run() {
-     *                         //具体要执行的代码
-     *                     }
-     *                 }).start();
-     *
-     *             }
-     *         }).start();
      * @param scheduler
      * @return
      */
