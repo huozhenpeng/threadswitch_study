@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.threadswitch.rx.AndroidSchedulers;
 import com.example.threadswitch.rx.Observable;
@@ -13,10 +14,13 @@ import com.example.threadswitch.rx.Subscriber;
 public class MainActivity extends AppCompatActivity {
 
 
+    private TextView tv_count;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tv_count=findViewById(R.id.tv_count);
 
     }
 
@@ -24,11 +28,20 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println("----" + Thread.currentThread().getName());
 
+
         Observable.create(new Observable.OnSubscribe<Integer>() {
             @Override
             public void call(Subscriber<? super Integer> subscriber) {
-                System.out.println("OnSubscribe@ " + Thread.currentThread().getName());
-                subscriber.onNext(1);
+                for(int i=0;i<10;i++)
+                {
+                    subscriber.onNext(i);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                subscriber.onCompleted();
             }
         })
                 .subscribeOn(Schedulers.net())
@@ -36,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Subscriber<Integer>() {
                     @Override
                     public void onCompleted() {
-                        System.out.println("Subscriber@ onCompleted" + Thread.currentThread().getName());
+
                     }
 
                     @Override
@@ -45,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onNext(Integer var1) {
-                        System.out.println("Subscriber@ onNext" + Thread.currentThread().getName());
                         System.out.println(var1);
+                        tv_count.setText(var1.toString());
                     }
                 });
 
