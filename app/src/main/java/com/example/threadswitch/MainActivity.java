@@ -23,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
         tv_count=findViewById(R.id.tv_count);
 
     }
+    
+    /**
+    * 记录一次修改
+    */
 
     public void click(View view) {
 
